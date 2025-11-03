@@ -4,7 +4,7 @@ using Serilog.Events;
 
 namespace Serilog.Sinks.Discord
 {
-    public static class DiscordSinkExtenstions
+    public static class DiscordSinkExtension
     {
         public static LoggerConfiguration Discord(
                 this LoggerSinkConfiguration loggerConfiguration,
