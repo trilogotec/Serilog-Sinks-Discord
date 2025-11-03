@@ -3,6 +3,7 @@ using Discord.Webhook;
 using Serilog.Core;
 using Serilog.Events;
 using System;
+using System.Threading.Tasks;
 
 namespace Serilog.Sinks.Discord
 {
@@ -11,32 +12,39 @@ namespace Serilog.Sinks.Discord
         private readonly IFormatProvider _formatProvider;
         private readonly UInt64 _webhookId;
         private readonly string _webhookToken;
+        private readonly string _botName = null;
+        private readonly string _avatarURL = null;
         private readonly LogEventLevel _restrictedToMinimumLevel;
-
+        private readonly DiscordWebhookClient _webHook;
+        
         public DiscordSink(
             IFormatProvider formatProvider,
             UInt64 webhookId,
             string webhookToken,
-            LogEventLevel restrictedToMinimumLevel = LogEventLevel.Information)
+            LogEventLevel restrictedToMinimumLevel = LogEventLevel.Information,
+            string botName = null,
+            string avatarURL = null)
         {
             _formatProvider = formatProvider;
             _webhookId = webhookId;
             _webhookToken = webhookToken;
+            _botName = botName;
+            _avatarURL = avatarURL;
             _restrictedToMinimumLevel = restrictedToMinimumLevel;
+            _webHook = new DiscordWebhookClient(_webhookId, _webhookToken);
         }
 
         public void Emit(LogEvent logEvent)
         {
-            SendMessage(logEvent);
+            SendMessageAsync(logEvent).Wait();
         }
 
-        private void SendMessage(LogEvent logEvent)
+        private async Task SendMessageAsync(LogEvent logEvent)
         {
             if (!ShouldLogMessage(_restrictedToMinimumLevel, logEvent.Level))
                 return;
 
             var embedBuilder = new EmbedBuilder();
-            var webHook = new DiscordWebhookClient(_webhookId, _webhookToken);
 
             try
             {
@@ -51,10 +59,6 @@ namespace Serilog.Sinks.Discord
 
                     var stackTrace = FormatMessage(logEvent.Exception.StackTrace, 1000);
                     embedBuilder.AddField("StackTrace:", stackTrace);
-
-                    webHook.SendMessageAsync(null, false, new Embed[] { embedBuilder.Build() })
-                        .GetAwaiter()
-                        .GetResult();
                 }
                 else
                 {
@@ -65,20 +69,15 @@ namespace Serilog.Sinks.Discord
                     SpecifyEmbedLevel(logEvent.Level, embedBuilder);
 
                     embedBuilder.Description = message;
-
-                    webHook.SendMessageAsync(
-                        null, false, new Embed[] { embedBuilder.Build() })
-                        .GetAwaiter()
-                        .GetResult();
                 }
+
+                await _webHook.SendMessageAsync(null, false, new Embed[] { embedBuilder.Build() }, _botName,
+                    _avatarURL);
             }
 
             catch (Exception ex)
             {
-                webHook.SendMessageAsync(
-                    $"ooo snap, {ex.Message}", false)
-                    .GetAwaiter()
-                    .GetResult();
+                await _webHook.SendMessageAsync($"ooo snap, {ex.Message}", false);
             }
         }
         private static void SpecifyEmbedLevel(LogEventLevel level, EmbedBuilder embedBuilder)
@@ -128,6 +127,6 @@ namespace Serilog.Sinks.Discord
         private static bool ShouldLogMessage(
             LogEventLevel minimumLogEventLevel,
             LogEventLevel messageLogEventLevel) =>
-                (int)messageLogEventLevel < (int)minimumLogEventLevel ? false : true;
+                (int)messageLogEventLevel >= (int)minimumLogEventLevel;
     }
 }

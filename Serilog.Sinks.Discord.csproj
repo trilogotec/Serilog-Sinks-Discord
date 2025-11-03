@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Authors>Abolfazl Edgelolli</Authors>
-    <Version>1.0.1</Version>
+    <Authors>Abolfazl Edgelolli, Dennes Neumann, Gideao Santana</Authors>
+    <Version>1.0.2</Version>
     <PackageId>Trilogo.Serilog.Sinks.Discord</PackageId>
     <Company>Trilogo</Company>
     <Product>Serilog Discord Sink</Product>
