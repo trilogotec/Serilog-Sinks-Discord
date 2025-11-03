@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <Authors>Abolfazl Edgelolli</Authors>
-    <Version>1.2.0</Version>
-    <Company>Serilog Contrib</Company>
+    <Version>1.0.1</Version>
+    <PackageId>Trilogo.Serilog.Sinks.Discord</PackageId>
+    <Company>Trilogo</Company>
     <Product>Serilog Discord Sink</Product>
     <NeutralLanguage>aa</NeutralLanguage>
     <PackageDescription>Serilog sink for Discord.</PackageDescription>
@@ -12,6 +12,7 @@
     <PackageProjectUrl>https://github.com/trilogotec/Serilog-Sinks-Discord</PackageProjectUrl>
     <PackageIcon>Icon.png</PackageIcon>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
