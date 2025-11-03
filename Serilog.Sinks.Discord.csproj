@@ -10,12 +10,12 @@
     <PackageDescription>Serilog sink for Discord.</PackageDescription>
     <RepositoryUrl>https://github.com/AblEdge/Serilog-Sinks-Discrod</RepositoryUrl>
     <PackageProjectUrl>https://github.com/serilog-contrib/Serilog-Sinks-Discord</PackageProjectUrl>
-    <PackageIcon>SinkIcon.png</PackageIcon>
+    <PackageIcon>Icon.png</PackageIcon>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="SinkIcon.png">
+    <None Include="Icon.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
