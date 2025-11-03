@@ -8,8 +8,8 @@
     <Product>Serilog Discord Sink</Product>
     <NeutralLanguage>aa</NeutralLanguage>
     <PackageDescription>Serilog sink for Discord.</PackageDescription>
-    <RepositoryUrl>https://github.com/AblEdge/Serilog-Sinks-Discrod</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/serilog-contrib/Serilog-Sinks-Discord</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/trilogotec/Serilog-Sinks-Discord</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/trilogotec/Serilog-Sinks-Discord</PackageProjectUrl>
     <PackageIcon>Icon.png</PackageIcon>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Discord.Net.Webhook" Version="3.8.1" />
-    <PackageReference Include="serilog" Version="2.12.0" />
+    <PackageReference Include="Discord.Net.Webhook" Version="3.18.0" />
+    <PackageReference Include="serilog" Version="4.3.0" />
   </ItemGroup>
 
 </Project>
