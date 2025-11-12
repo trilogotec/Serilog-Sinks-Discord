@@ -13,15 +13,35 @@ namespace Serilog.Sinks.Discord
             LogEventLevel restrictedToMinimumLevel = LogEventLevel.Debug,
             string botName = null,
             string avatarURL = null,
+            int batchIntervalInSeconds = 2,
+            int batchSizeLimit = 100,
+            int? queueLimit = null,
             IFormatProvider formatProvider = null)
         {
             if (loggerConfiguration is null)
             {
                 throw new ArgumentNullException(nameof(loggerConfiguration));
             }
+            
+            var batchingOptions = new BatchingOptions
+            {
+                BatchSizeLimit = batchSizeLimit,
+                BufferingTimeLimit = TimeSpan.FromSeconds(batchIntervalInSeconds),
+                EagerlyEmitFirstEvent = true,
+                QueueLimit = queueLimit
+            };
 
-            return loggerConfiguration.Sink(new DiscordSink(formatProvider, webhookId, webhookToken,
-                restrictedToMinimumLevel, botName, avatarURL));
+            var options = new DiscordSinkOptions
+            {
+                BotName = botName,
+                AvatarURL = avatarURL,
+                WebHookId = webhookId,
+                WebHookToken = webhookToken,
+                FormatProvider = formatProvider,
+                MinimumLogEventLevel = restrictedToMinimumLevel
+            };
+
+            return loggerConfiguration.Sink(new DiscordSink(options), batchingOptions);
         }
     }
 }
