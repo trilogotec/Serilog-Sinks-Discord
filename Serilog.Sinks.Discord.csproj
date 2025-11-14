@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Authors>Abolfazl Edgelolli, Dennes Neumann, Gideao Santana</Authors>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <PackageId>Trilogo.Serilog.Sinks.Discord</PackageId>
     <Company>Trilogo</Company>
     <Product>Serilog Discord Sink</Product>
