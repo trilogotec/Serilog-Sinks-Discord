@@ -13,6 +13,10 @@ namespace Serilog.Sinks.Discord
             LogEventLevel restrictedToMinimumLevel = LogEventLevel.Debug,
             string botName = null,
             string avatarURL = null,
+            string prefixFilter = null,
+            string suffixFilter = null,
+            string regexFilter = null,
+            bool filterExceptions = false,
             int batchIntervalInSeconds = 2,
             int batchSizeLimit = 100,
             int? queueLimit = null,
@@ -37,6 +41,10 @@ namespace Serilog.Sinks.Discord
                 AvatarURL = avatarURL,
                 WebHookId = webhookId,
                 WebHookToken = webhookToken,
+                PrefixFilter = prefixFilter,
+                SuffixFilter = suffixFilter,
+                RegexFilter = regexFilter,
+                FilterExceptions = filterExceptions,
                 FormatProvider = formatProvider,
                 MinimumLogEventLevel = restrictedToMinimumLevel
             };

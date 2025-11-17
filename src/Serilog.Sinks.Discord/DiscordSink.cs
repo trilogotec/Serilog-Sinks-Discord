@@ -5,6 +5,7 @@ using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace Serilog.Sinks.Discord
 {
@@ -26,6 +27,13 @@ namespace Serilog.Sinks.Discord
         {
             if (!ShouldLogMessage(_restrictedToMinimumLevel, logEvent.Level))
                 return;
+
+            var matchMessage = logEvent.Exception?.ToString() ?? logEvent.RenderMessage(_formatProvider);
+
+            if (ShouldFilterMessage(logEvent, _formatProvider, _options))
+            {
+                return;
+            }
 
             var embedBuilder = new EmbedBuilder();
 
@@ -102,6 +110,46 @@ namespace Serilog.Sinks.Discord
                 message = $"```{message}```";
 
             return message;
+        }
+
+        private static bool ShouldFilterMessage(LogEvent logEvent, IFormatProvider formatProvider, DiscordSinkOptions options)
+        {
+            var exception = logEvent.Exception?.ToString();
+            var message = logEvent.RenderMessage(formatProvider);
+
+            if (exception is not null)
+            {
+                if (options.FilterExceptions)
+                {
+                    return ShouldFilterMessage(exception, options) && ShouldFilterMessage(message, options);
+                }
+
+                return false;
+            }
+            return ShouldFilterMessage(message, options);
+        }
+        
+        private static bool ShouldFilterMessage(string message, DiscordSinkOptions options)
+        {
+            if (options.PrefixFilter is null && options.SuffixFilter is null && options.RegexFilter is null)
+            {
+                return false;
+            }
+            
+            if (options.PrefixFilter is { } prefix && message.StartsWith(prefix))
+            {
+                return false;
+            }
+            if (options.SuffixFilter is { } suffix && message.EndsWith(suffix))
+            {
+                return false;
+            }
+            if (options.RegexFilter is { } regex && Regex.IsMatch(message, regex) )
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private static bool ShouldLogMessage(
