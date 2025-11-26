@@ -144,7 +144,7 @@ namespace Serilog.Sinks.Discord
             {
                 return false;
             }
-            if (options.RegexFilter is { } regex && Regex.IsMatch(message, regex) )
+            if (options.RegexFilter is { } regex && Regex.IsMatch(message, regex, RegexOptions.IgnoreCase) )
             {
                 return false;
             }
